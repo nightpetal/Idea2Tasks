@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace Idea2Tasks.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class ProjectController : ControllerBase
     {
-        
+
     }
 }
