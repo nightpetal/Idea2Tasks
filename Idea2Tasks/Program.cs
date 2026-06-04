@@ -1,4 +1,5 @@
 using Idea2Tasks.Data;
+using Idea2Tasks.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +16,13 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppDb>(options => options.UseSqlite(
     builder.Configuration.GetConnectionString("DefaultConnection")
 ));
+
+builder.Services.AddHttpClient<GeminiService>();
+
+var apiKey = builder.Configuration["AppSettings:ApiKey"];
+builder.Services.Configure<AppSettingsOptions>(
+    builder.Configuration.GetSection("AppSettings"));
+builder.Services.AddTransient<GeminiService>();
 
 var app = builder.Build();
 
