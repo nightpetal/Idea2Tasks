@@ -29,13 +29,13 @@ namespace Idea2Tasks.Controllers
                 Name = projectDTO.Name,
                 Description = projectDTO.Description,
                 IsCompleted = projectDTO.IsCompleted,
-                SubTasks = projectDTO.SubTasks?.Select(s => new SubTask
-                {
-                    Description = s.Description,
-                    IsCompleted = s.IsCompleted,
-                    Duration = s.Duration,
-                    Project = null!
-                }).ToList() ?? new List<SubTask>()
+                // SubTasks = projectDTO.SubTasks?.Select(s => new SubTask
+                // {
+                //     Description = s.Description,
+                //     IsCompleted = s.IsCompleted,
+                //     Duration = s.Duration,
+                //     Project = null!
+                // }).ToList() ?? new List<SubTask>()
             };
 
             string generatedContent = string.Empty;
