@@ -369,26 +369,23 @@ _See [SubTaskDTO](#schemas)_
 <summary>Curl Example (View More):</summary>
 
 ```
-
-curl -X 'POST' \
- 'http://localhost:5202/api/Project' \
- -H 'accept: text/plain' \
- -H 'Content-Type: application/json' \
- -d '{
-"name": "Connection",
-"description": "Connect frontend with ASP .NET Core backend",
-"isCompleted": true,
-"subTasks": [
-{
-"id": 0,
-"description": "string",
-"isCompleted": true,
-"duration": 0,
-"projectId": 0
-}
-]
-}'
-
+curl -X POST "http://localhost:5202/api/Project" \
+  -H "accept: text/plain" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Connection",
+    "description": "Connect frontend with ASP .NET Core backend",
+    "isCompleted": true,
+    "subTasks": [
+      {
+        "id": 0,
+        "description": "string",
+        "isCompleted": true,
+        "duration": 0,
+        "projectId": 0
+      }
+    ]
+  }'
 ```
 
 </details>
@@ -402,76 +399,75 @@ Content-Type: application/json
 <summary>Response Body (View More):</summary>
 
 ```
-
 {
-"name": "Connection",
-"description": "Connect frontend with ASP .NET Core backend",
-"isCompleted": true,
-"subTasks": [
-{
-"id": 1,
-"description": "Configure CORS policy in ASP.NET Core Program.cs to allow incoming requests from the frontend origin",
-"isCompleted": false,
-"duration": 45,
-"projectId": 1
-},
-{
-"id": 2,
-"description": "Set up HTTP client (Axios or Fetch) with base URL and global interceptors in the frontend application",
-"isCompleted": false,
-"duration": 60,
-"projectId": 1
-},
-{
-"id": 3,
-"description": "Define environment variables for API connection strings in both development and production environments",
-"isCompleted": false,
-"duration": 45,
-"projectId": 1
-},
-{
-"id": 4,
-"description": "Implement JWT authentication flow, including backend token generation and frontend storage in cookies or localStorage",
-"isCompleted": false,
-"duration": 180,
-"projectId": 1
-},
-{
-"id": 5,
-"description": "Create backend Data Transfer Objects (DTOs) and map them to frontend TypeScript interfaces",
-"isCompleted": false,
-"duration": 90,
-"projectId": 1
-},
-{
-"id": 6,
-"description": "Integrate data fetching services in the frontend to retrieve and display data from an ASP.NET Core GET endpoint",
-"isCompleted": false,
-"duration": 120,
-"projectId": 1
-},
-{
-"id": 7,
-"description": "Implement form submission in the frontend and connect it to an ASP.NET Core POST endpoint with validation mapping",
-"isCompleted": false,
-"duration": 120,
-"projectId": 1
-},
-{
-"id": 8,
-"description": "Set up global exception handling middleware on the backend and friendly error alerts on the frontend",
-"isCompleted": false,
-"duration": 90,
-"projectId": 1
-},
-{
-"id": 9,
-"description": "Perform end-to-end integration testing to verify API routing, payload formats, and status codes",
-"isCompleted": false,
-"duration": 120,
-"projectId": 1
-}
-]
+  "name": "Connection",
+  "description": "Connect frontend with ASP .NET Core backend",
+  "isCompleted": true,
+  "subTasks": [
+    {
+      "id": 1,
+      "description": "Configure CORS policy in ASP.NET Core Program.cs to allow incoming requests from the frontend origin",
+      "isCompleted": false,
+      "duration": 45,
+      "projectId": 1
+    },
+    {
+      "id": 2,
+      "description": "Set up HTTP client (Axios or Fetch) with base URL and global interceptors in the frontend application",
+      "isCompleted": false,
+      "duration": 60,
+      "projectId": 1
+    },
+    {
+      "id": 3,
+      "description": "Define environment variables for API connection strings in both development and production environments",
+      "isCompleted": false,
+      "duration": 45,
+      "projectId": 1
+    },
+    {
+      "id": 4,
+      "description": "Implement JWT authentication flow, including backend token generation and frontend storage in cookies or localStorage",
+      "isCompleted": false,
+      "duration": 180,
+      "projectId": 1
+    },
+    {
+      "id": 5,
+      "description": "Create backend Data Transfer Objects (DTOs) and map them to frontend TypeScript interfaces",
+      "isCompleted": false,
+      "duration": 90,
+      "projectId": 1
+    },
+    {
+      "id": 6,
+      "description": "Integrate data fetching services in the frontend to retrieve and display data from an ASP.NET Core GET endpoint",
+      "isCompleted": false,
+      "duration": 120,
+      "projectId": 1
+    },
+    {
+      "id": 7,
+      "description": "Implement form submission in the frontend and connect it to an ASP.NET Core POST endpoint with validation mapping",
+      "isCompleted": false,
+      "duration": 120,
+      "projectId": 1
+    },
+    {
+      "id": 8,
+      "description": "Set up global exception handling middleware on the backend and friendly error alerts on the frontend",
+      "isCompleted": false,
+      "duration": 90,
+      "projectId": 1
+    },
+    {
+      "id": 9,
+      "description": "Perform end-to-end integration testing to verify API routing, payload formats, and status codes",
+      "isCompleted": false,
+      "duration": 120,
+      "projectId": 1
+    }
+  ]
 }
 
 ```
