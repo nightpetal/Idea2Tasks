@@ -1,5 +1,7 @@
-using Idea2Tasks.Data;
-using Idea2Tasks.Services;
+using Idea2Tasks.Backend.Data;
+using Idea2Tasks.Backend.Repositories;
+using Idea2Tasks.Backend.Repositories.Interface;
+using Idea2Tasks.Backend.Services;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
@@ -12,6 +14,9 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddScoped<IProjectRepo, ProjectRepo>();
+builder.Services.AddScoped<ISubTaskRepo, SubTaskRepo>();
 
 builder.Services.AddDbContext<AppDb>(options => options.UseSqlite(
     builder.Configuration.GetConnectionString("DefaultConnection")

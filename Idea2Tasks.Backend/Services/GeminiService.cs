@@ -2,7 +2,7 @@ using System.Text;
 using System.Text.Json;
 using Microsoft.Extensions.Options;
 
-namespace Idea2Tasks.Services;
+namespace Idea2Tasks.Backend.Services;
 
 public class GeminiService
 {
@@ -39,7 +39,7 @@ Format:
   {
     "description": "Task description",
     "isCompleted": false,
-    "duration": 120
+    "durationInHrs": <int>
   }
 ]
 """;

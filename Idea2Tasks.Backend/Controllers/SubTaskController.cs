@@ -1,116 +1,74 @@
-using Idea2Tasks.Data;
-using Idea2Tasks.DTO;
-using Idea2Tasks.Models;
+using Idea2Tasks.Backend.DTO;
+using Idea2Tasks.Backend.Mapper;
+using Idea2Tasks.Backend.Models;
+using Idea2Tasks.Backend.Repositories.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace Idea2Tasks.Controllers
+namespace Idea2Tasks.Backend.Controllers
 {
     [ApiController]
-    [Route("api/project/{projectId}/[controller]")]
+    [Route("api/[controller]")]
     public class SubTaskController : ControllerBase
     {
-        private readonly AppDb appDb;
-        public SubTaskController(AppDb _appDb)
+        private readonly ISubTaskRepo _subTaskRepo;
+
+        public SubTaskController(ISubTaskRepo subTaskRepo)
         {
-            appDb = _appDb;
+            _subTaskRepo = subTaskRepo;
         }
 
         [HttpPost]
         public async Task<ActionResult> CreateTask(int projectId, SubTaskDTO subTaskDTO)
         {
-            SubTask subTask = new SubTask
-            {
-                Description = subTaskDTO.Description,
-                Duration = subTaskDTO.Duration,
-                IsCompleted = subTaskDTO.IsCompleted,
-                ProjectId = projectId
-            };
+            SubTask subTask = subTaskDTO.ToSubTask();
 
-            appDb.SubTasks.Add(subTask);
-            await appDb.SaveChangesAsync();
+            await _subTaskRepo.AddSubTaskAsync(subTask);
             return Ok();
         }
 
-        [HttpGet("/api/[controller]")]
+        [HttpGet]
         public async Task<ActionResult> GetAllTasks()
         {
-            var tasks = await appDb.SubTasks.ToListAsync();
-            return Ok(tasks);
+            return Ok(await _subTaskRepo.GetAllAsync());
         }
 
-        [HttpGet("/api/[controller]/{id}")]
+        [HttpGet("{id:int}")]
         public async Task<ActionResult> GetTasksById(int id)
         {
-            var task = await appDb.SubTasks.FindAsync(id);
-            if (task == null)
-            {
-                return NotFound();
-            }
-
-            SubTaskDTO subTaskDTO = new()
-            {
-                Id = task.Id,
-                Description = task.Description,
-                Duration = task.Duration,
-                IsCompleted = task.IsCompleted,
-                ProjectId = task.ProjectId
-            };
+            var task = await _subTaskRepo.GetByIdAsync(id);
+            if (task is null)
+                return BadRequest();
+            SubTaskDTO? subTaskDTO = task.ToSubTaskDTO();
             return Ok(subTaskDTO);
         }
 
-        [HttpGet]
+        [HttpGet("p/{projectId:int}")]
         public async Task<ActionResult> GetTaskByProductId(int projectId)
         {
-            var task = await appDb.SubTasks
-            .Where(s => s.ProjectId == projectId).ToListAsync();
+            var task = await _subTaskRepo.GetAllAsync();
+            var projectTasks = task.Select(s => s.ProjectId == projectId).ToList();
 
-            var subTaskDTO = task.Select(s => new SubTaskDTO
-            {
-                Id = s.Id,
-                Description = s.Description,
-                IsCompleted = s.IsCompleted,
-                Duration = s.Duration,
-                ProjectId = s.ProjectId
-            }).ToList();
-
-            return Ok(subTaskDTO);
+            return Ok(projectTasks);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateTaskById(int id, SubTaskDTO subTaskDTO)
+        public async Task<ActionResult> Update(int id, SubTaskDTO subTaskDTO)
         {
-            var task = await appDb.SubTasks.FindAsync(id);
+            var task = await _subTaskRepo.UpdateAsync(id, subTaskDTO.ToSubTask());
             if (task == null)
             {
                 return NotFound();
             }
-            task.Description = subTaskDTO.Description;
-            task.Duration = subTaskDTO.Duration;
-            task.IsCompleted = subTaskDTO.IsCompleted;
-
-            SubTaskDTO taskDTO = new SubTaskDTO
-            {
-                Id = task.Id,
-                Description = task.Description,
-                Duration = task.Duration,
-                IsCompleted = task.IsCompleted,
-                ProjectId = task.ProjectId
-            };
-            await appDb.SaveChangesAsync();
-            return Ok(taskDTO);
+            return Ok(subTaskDTO);
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteTaskById(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            var task = await appDb.SubTasks.FindAsync(id);
-            if (task == null)
-            {
+            var task = await _subTaskRepo.DeleteAsync(id);
+            if (!task)
                 return NotFound();
-            }
-            appDb.SubTasks.Remove(task);
-            await appDb.SaveChangesAsync();
             return NoContent();
         }
     }
