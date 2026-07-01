@@ -1,17 +1,16 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Idea2Tasks.DTO
+namespace Idea2Tasks.Backend.DTO
 {
     public class SubTaskDTO
     {
         public int Id { get; set; }
         [Required]
         [MaxLength(1000)]
-        public string Description { get; set; } = String.Empty;
-        [Required]
+        public required string Description { get; set; }
         public bool IsCompleted { get; set; } = false;
         [Required]
-        public int Duration { get; set; }
+        public int DurationInHrs { get; set; }
 
         public int ProjectId { get; set; }
     }

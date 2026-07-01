@@ -10,16 +10,16 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Idea2Tasks.Backend.Migrations
 {
     [DbContext(typeof(AppDb))]
-    [Migration("20260605054807_Create")]
-    partial class Create
+    [Migration("20260701124751_UpdatedModel")]
+    partial class UpdatedModel
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "10.0.8");
+            modelBuilder.HasAnnotation("ProductVersion", "10.0.9");
 
-            modelBuilder.Entity("Idea2Tasks.Models.Project", b =>
+            modelBuilder.Entity("Idea2Tasks.Backend.Models.Project", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -43,7 +43,7 @@ namespace Idea2Tasks.Backend.Migrations
                     b.ToTable("Projects");
                 });
 
-            modelBuilder.Entity("Idea2Tasks.Models.SubTask", b =>
+            modelBuilder.Entity("Idea2Tasks.Backend.Models.SubTask", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -54,7 +54,7 @@ namespace Idea2Tasks.Backend.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Duration")
+                    b.Property<int>("DurationInHrs")
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("IsCompleted")
@@ -70,9 +70,9 @@ namespace Idea2Tasks.Backend.Migrations
                     b.ToTable("SubTasks");
                 });
 
-            modelBuilder.Entity("Idea2Tasks.Models.SubTask", b =>
+            modelBuilder.Entity("Idea2Tasks.Backend.Models.SubTask", b =>
                 {
-                    b.HasOne("Idea2Tasks.Models.Project", "Project")
+                    b.HasOne("Idea2Tasks.Backend.Models.Project", "Project")
                         .WithMany("SubTasks")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -81,7 +81,7 @@ namespace Idea2Tasks.Backend.Migrations
                     b.Navigation("Project");
                 });
 
-            modelBuilder.Entity("Idea2Tasks.Models.Project", b =>
+            modelBuilder.Entity("Idea2Tasks.Backend.Models.Project", b =>
                 {
                     b.Navigation("SubTasks");
                 });

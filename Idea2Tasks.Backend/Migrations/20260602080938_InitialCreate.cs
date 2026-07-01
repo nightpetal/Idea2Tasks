@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace Idea2Tasks.Migrations
+namespace Idea2Tasks.Backend.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration

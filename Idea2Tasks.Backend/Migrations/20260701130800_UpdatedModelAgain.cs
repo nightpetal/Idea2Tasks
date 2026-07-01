@@ -5,7 +5,7 @@
 namespace Idea2Tasks.Backend.Migrations
 {
     /// <inheritdoc />
-    public partial class Create : Migration
+    public partial class UpdatedModelAgain : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

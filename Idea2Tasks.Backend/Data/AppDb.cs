@@ -1,7 +1,7 @@
-using Idea2Tasks.Models;
+using Idea2Tasks.Backend.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Idea2Tasks.Data
+namespace Idea2Tasks.Backend.Data
 {
     public class AppDb : DbContext
     {
