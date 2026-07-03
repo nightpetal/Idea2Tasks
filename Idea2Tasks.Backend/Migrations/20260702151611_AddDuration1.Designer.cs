@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Idea2Tasks.Backend.Migrations
 {
     [DbContext(typeof(AppDb))]
-    [Migration("20260701130800_UpdatedModelAgain")]
-    partial class UpdatedModelAgain
+    [Migration("20260702151611_AddDuration1")]
+    partial class AddDuration1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

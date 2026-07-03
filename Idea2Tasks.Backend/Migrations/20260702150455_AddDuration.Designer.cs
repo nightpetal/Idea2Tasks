@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Idea2Tasks.Backend.Migrations
 {
     [DbContext(typeof(AppDb))]
-    [Migration("20260701124751_UpdatedModel")]
-    partial class UpdatedModel
+    [Migration("20260702150455_AddDuration")]
+    partial class AddDuration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -72,13 +72,11 @@ namespace Idea2Tasks.Backend.Migrations
 
             modelBuilder.Entity("Idea2Tasks.Backend.Models.SubTask", b =>
                 {
-                    b.HasOne("Idea2Tasks.Backend.Models.Project", "Project")
+                    b.HasOne("Idea2Tasks.Backend.Models.Project", null)
                         .WithMany("SubTasks")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Project");
                 });
 
             modelBuilder.Entity("Idea2Tasks.Backend.Models.Project", b =>

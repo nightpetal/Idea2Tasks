@@ -29,3 +29,10 @@ services:
       dockerfile: Idea2Tasks.Backend/Dockerfile
     ports:
       - 8080:8080
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+      - ConnectionStrings__DefaultConnection=Data Source=/app/data/Idea2Task.db
+      - AppSettings__ApiKey= ${APP_API_KEY}
+    volumes:
+      - ./Idea2Tasks.Backend/Data:/app/data

@@ -83,7 +83,7 @@ namespace Idea2Tasks.Backend.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ProjectDTO>> Get(int id)
+        public async Task<ActionResult<Project>> Get(int id)
         {
             return Ok(await _projectRepo.GetByIdAsync(id));
         }
