@@ -3,7 +3,6 @@ using Idea2Tasks.Backend.Mapper;
 using Idea2Tasks.Backend.Models;
 using Idea2Tasks.Backend.Repositories.Interface;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Idea2Tasks.Backend.Controllers
 {
@@ -19,56 +18,74 @@ namespace Idea2Tasks.Backend.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateTask(int projectId, SubTaskDTO subTaskDTO)
+        public async Task<ActionResult<SubTaskDTO>> CreateTask([FromQuery] int projectId, [FromBody] SubTaskDTO subTaskDTO)
         {
-            SubTask subTask = subTaskDTO.ToSubTask();
+            var subTask = subTaskDTO.ToSubTask();
+            subTask.ProjectId = projectId != 0 ? projectId : subTaskDTO.ProjectId;
 
-            await _subTaskRepo.AddSubTaskAsync(subTask);
-            return Ok();
+            var createdTask = await _subTaskRepo.AddSubTaskAsync(subTask);
+            if (createdTask is null)
+            {
+                return BadRequest();
+            }
+
+            return CreatedAtAction(nameof(GetTasksById), new { id = createdTask.Id }, createdTask.ToSubTaskDTO());
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetAllTasks()
+        public async Task<ActionResult<List<SubTaskDTO>>> GetAllTasks()
         {
-            return Ok(await _subTaskRepo.GetAllAsync());
+            var tasks = await _subTaskRepo.GetAllAsync();
+            return Ok(tasks.Select(task => task.ToSubTaskDTO()).Where(task => task is not null).Select(task => task!).ToList());
         }
 
         [HttpGet("{id:int}")]
-        public async Task<ActionResult> GetTasksById(int id)
+        public async Task<ActionResult<SubTaskDTO>> GetTasksById(int id)
         {
             var task = await _subTaskRepo.GetByIdAsync(id);
             if (task is null)
-                return BadRequest();
-            SubTaskDTO? subTaskDTO = task.ToSubTaskDTO();
-            return Ok(subTaskDTO);
+            {
+                return NotFound();
+            }
+
+            return Ok(task.ToSubTaskDTO());
         }
 
         [HttpGet("p/{projectId:int}")]
-        public async Task<ActionResult> GetTaskByProductId(int projectId)
+        public async Task<ActionResult<List<SubTaskDTO>>> GetTaskByProjectId(int projectId)
         {
-            var task = await _subTaskRepo.GetAllAsync();
-            var projectTasks = task.Select(s => s.ProjectId == projectId).ToList();
+            var tasks = await _subTaskRepo.GetAllAsync();
+            var projectTasks = tasks
+                .Where(task => task.ProjectId == projectId)
+                .Select(task => task.ToSubTaskDTO())
+                .Where(task => task is not null)
+                .Select(task => task!)
+                .ToList();
 
             return Ok(projectTasks);
         }
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult> Update(int id, SubTaskDTO subTaskDTO)
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult<SubTaskDTO>> Update(int id, SubTaskDTO subTaskDTO)
         {
             var task = await _subTaskRepo.UpdateAsync(id, subTaskDTO.ToSubTask());
-            if (task == null)
+            if (task is null)
             {
                 return NotFound();
             }
-            return Ok(subTaskDTO);
+
+            return Ok(task.ToSubTaskDTO());
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         public async Task<ActionResult> Delete(int id)
         {
-            var task = await _subTaskRepo.DeleteAsync(id);
-            if (!task)
+            var deleted = await _subTaskRepo.DeleteAsync(id);
+            if (!deleted)
+            {
                 return NotFound();
+            }
+
             return NoContent();
         }
     }

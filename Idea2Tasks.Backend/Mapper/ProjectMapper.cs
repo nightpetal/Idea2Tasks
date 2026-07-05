@@ -7,12 +7,13 @@ namespace Idea2Tasks.Backend.Mapper
     {
         public static ProjectDTO ToProjectDTO(this Project project)
         {
-            ProjectDTO dto = new()
+            return new ProjectDTO
             {
+                Id = project.Id,
                 Name = project.Name,
                 Description = project.Description,
                 IsCompleted = project.IsCompleted,
-                SubTaskDTO = project.SubTasks?.Select(s => new SubTaskDTO
+                SubTasks = project.SubTasks?.Select(s => new SubTaskDTO
                 {
                     Id = s.Id,
                     Description = s.Description,
@@ -21,8 +22,6 @@ namespace Idea2Tasks.Backend.Mapper
                     DurationInHrs = s.DurationInHrs,
                 }).ToList() ?? []
             };
-
-            return dto;
         }
 
         public static Project ToProject(this ProjectOnlyDTO dto)

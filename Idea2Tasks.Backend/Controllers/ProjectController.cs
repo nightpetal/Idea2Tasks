@@ -34,27 +34,15 @@ namespace Idea2Tasks.Backend.Controllers
 
             try
             {
-                var generatedContent =
-                    await _geminiService.GenerateProjectTasksAsync(
-                        project.Name,
-                        project.Description
-                    );
+                var generatedContent = await _geminiService.GenerateProjectTasksAsync(project.Name, project.Description);
+                generatedContent = generatedContent.Replace("```json", "").Replace("```", "").Trim();
 
-                generatedContent = generatedContent
-                    .Replace("```json", "")
-                    .Replace("```", "")
-                    .Trim();
+                var aiSubTasks = JsonSerializer.Deserialize<List<SubTaskDTO>>(generatedContent, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
 
-
-                Console.WriteLine($"Gemini Response:\n{generatedContent}");
-                var aiSubTasks = JsonSerializer.Deserialize<List<SubTaskDTO>>(
-                    generatedContent,
-                    new JsonSerializerOptions
-                    {
-                        PropertyNameCaseInsensitive = true
-                    });
-
-                if (aiSubTasks != null)
+                if (aiSubTasks is not null)
                 {
                     project.SubTasks = aiSubTasks.Select(s => new SubTask
                     {
@@ -69,49 +57,56 @@ namespace Idea2Tasks.Backend.Controllers
                 Console.WriteLine(ex.Message);
             }
 
-            await _projectRepo.AddProjectAsync(project);
-
-            return Ok(project.ToProjectDTO());
+            var createdProject = await _projectRepo.AddProjectAsync(project);
+            return Ok(createdProject?.ToProjectDTO());
         }
 
         [HttpGet]
         public async Task<ActionResult<List<ProjectDTO>>> GetAllProjects()
         {
             var projects = await _projectRepo.GetAllAsync();
-            var projectDTOs = projects.Select(s => s.ToProjectDTO()).ToList();
-            return Ok(projectDTOs);
+            return Ok(projects.Select(project => project.ToProjectDTO()).ToList());
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Project>> Get(int id)
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<ProjectDTO>> GetById(int id)
         {
-            return Ok(await _projectRepo.GetByIdAsync(id));
+            var project = await _projectRepo.GetByIdAsync(id);
+            if (project is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(project.ToProjectDTO());
         }
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult> Update(int id, ProjectOnlyDTO projectDTO)
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult<ProjectDTO>> Update(int id, ProjectOnlyDTO projectDTO)
         {
-            Project proj = new Project
+            var project = await _projectRepo.UpdateAsync(id, new Project
             {
                 Name = projectDTO.Name,
                 Description = projectDTO.Description,
-                IsCompleted = projectDTO.IsCompleted,
-            };
-            var project = await _projectRepo.UpdateAsync(id, proj);
+                IsCompleted = projectDTO.IsCompleted
+            });
 
             if (project is null)
+            {
                 return NotFound();
-            return Ok(projectDTO);
+            }
+
+            return Ok(project.ToProjectDTO());
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         public async Task<ActionResult> Delete(int id)
         {
-            bool flag = await _projectRepo.DeleteAsync(id);
-            if (!flag)
+            var deleted = await _projectRepo.DeleteAsync(id);
+            if (!deleted)
             {
-                return BadRequest();
+                return NotFound();
             }
+
             return NoContent();
         }
     }
