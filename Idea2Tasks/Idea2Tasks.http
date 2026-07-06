@@ -1,6 +1,0 @@
-@Idea2Tasks_HostAddress = http://localhost:5202
-
-GET {{Idea2Tasks_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
