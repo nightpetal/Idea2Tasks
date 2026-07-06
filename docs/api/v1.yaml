@@ -1,0 +1,373 @@
+openapi: 3.1.1
+info:
+  title: Idea2Tasks.Backend | v1
+  version: 1.0.0
+servers:
+  - url: http://localhost:5091/
+paths:
+  /api/Project:
+    post:
+      tags:
+        - Project
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProjectOnlyDTO"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/ProjectOnlyDTO"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/ProjectOnlyDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProjectDTO"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProjectDTO"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProjectDTO"
+    get:
+      tags:
+        - Project
+      responses:
+        "200":
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ProjectDTO"
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ProjectDTO"
+            text/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ProjectDTO"
+  /api/Project/{id}:
+    get:
+      tags:
+        - Project
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            pattern: ^-?(?:0|[1-9]\d*)$
+            type: integer
+            format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProjectDTO"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProjectDTO"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProjectDTO"
+    put:
+      tags:
+        - Project
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            pattern: ^-?(?:0|[1-9]\d*)$
+            type: integer
+            format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProjectOnlyDTO"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/ProjectOnlyDTO"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/ProjectOnlyDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProjectDTO"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProjectDTO"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProjectDTO"
+    delete:
+      tags:
+        - Project
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            pattern: ^-?(?:0|[1-9]\d*)$
+            type: integer
+            format: int32
+      responses:
+        "200":
+          description: OK
+  /api/SubTask:
+    post:
+      tags:
+        - SubTask
+      parameters:
+        - name: projectId
+          in: query
+          schema:
+            pattern: ^-?(?:0|[1-9]\d*)$
+            type:
+              - integer
+              - string
+            format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SubTaskDTO"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/SubTaskDTO"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/SubTaskDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/SubTaskDTO"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubTaskDTO"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/SubTaskDTO"
+    get:
+      tags:
+        - SubTask
+      responses:
+        "200":
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SubTaskDTO"
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SubTaskDTO"
+            text/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SubTaskDTO"
+  /api/SubTask/{id}:
+    get:
+      tags:
+        - SubTask
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            pattern: ^-?(?:0|[1-9]\d*)$
+            type: integer
+            format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/SubTaskDTO"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubTaskDTO"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/SubTaskDTO"
+    put:
+      tags:
+        - SubTask
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            pattern: ^-?(?:0|[1-9]\d*)$
+            type: integer
+            format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SubTaskDTO"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/SubTaskDTO"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/SubTaskDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/SubTaskDTO"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubTaskDTO"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/SubTaskDTO"
+    delete:
+      tags:
+        - SubTask
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            pattern: ^-?(?:0|[1-9]\d*)$
+            type: integer
+            format: int32
+      responses:
+        "200":
+          description: OK
+  /api/SubTask/p/{projectId}:
+    get:
+      tags:
+        - SubTask
+      parameters:
+        - name: projectId
+          in: path
+          required: true
+          schema:
+            pattern: ^-?(?:0|[1-9]\d*)$
+            type: integer
+            format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SubTaskDTO"
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SubTaskDTO"
+            text/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SubTaskDTO"
+components:
+  schemas:
+    ProjectDTO:
+      required:
+        - name
+        - description
+      type: object
+      properties:
+        id:
+          pattern: ^-?(?:0|[1-9]\d*)$
+          type:
+            - integer
+            - string
+          format: int32
+        name:
+          maxLength: 50
+          type: string
+        description:
+          maxLength: 1000
+          type: string
+        isCompleted:
+          type: boolean
+        subTasks:
+          type:
+            - "null"
+            - array
+          items:
+            $ref: "#/components/schemas/SubTaskDTO"
+    ProjectOnlyDTO:
+      required:
+        - name
+        - description
+      type: object
+      properties:
+        name:
+          maxLength: 50
+          type: string
+        description:
+          maxLength: 1000
+          type: string
+        isCompleted:
+          type: boolean
+    SubTaskDTO:
+      required:
+        - description
+        - durationInHrs
+      type: object
+      properties:
+        id:
+          pattern: ^-?(?:0|[1-9]\d*)$
+          type:
+            - integer
+            - string
+          format: int32
+        description:
+          maxLength: 1000
+          type: string
+        isCompleted:
+          type: boolean
+        durationInHrs:
+          pattern: ^-?(?:0|[1-9]\d*)$
+          type:
+            - integer
+            - string
+          format: int32
+        projectId:
+          pattern: ^-?(?:0|[1-9]\d*)$
+          type:
+            - integer
+            - string
+          format: int32
+tags:
+  - name: Project
+  - name: SubTask
